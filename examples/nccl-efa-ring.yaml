@@ -1,7 +1,7 @@
 apiVersion: kubeflow.org/v1alpha2
 kind: MPIJob
 metadata:
-  name: nccl-tests-efa
+  name: nccl-tests-efa-ring
 spec:
   slotsPerWorker: 8
   cleanPodPolicy: Running
@@ -29,19 +29,11 @@ spec:
             - --allow-run-as-root
             - --tag-output
             - -np
-            - "16"
-            - -bind-to
-            - none
-            - -map-by
-            - slot
+            - "3"
             - -x
             - PATH
             - -x
             - LD_LIBRARY_PATH
-            - -x
-            - XLA_FLAGS
-            - -x
-            - TF_XLA_FLAGS
             - -x
             - NCCL_DEBUG=INFO
             - -x
@@ -54,21 +46,7 @@ spec:
             - pml
             - ^cm
             - --oversubscribe
-            - /tmp/nccl-tests/build/all_reduce_perf
-            - -b
-            - "8"
-            - -e
-            - 2G
-            - -f
-            - "2"
-            - -t
-            - "1"
-            - -g
-            - "1"
-            - -c
-            - "1"
-            - -n
-            - "1000"
+            - /opt/aws-ofi-nccl/install/bin/ring
 
     Worker:
       replicas: 2
