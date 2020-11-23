@@ -1,2 +1,2 @@
 # ml-efa-eks
-Distributed 
+Distributed Training on Amazon EKS with EFA
