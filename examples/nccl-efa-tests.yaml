@@ -12,13 +12,9 @@ spec:
          spec:
           imagePullPolicy: Always
           restartPolicy: OnFailure
-          volumes:
-          - name:  fsx
-            persistentVolumeClaim:
-              claimName: fsx-claim
           containers:
-          - image: 231748552833.dkr.ecr.us-east-1.amazonaws.com/bert-efa-hvd-tf1-py3:latest
-            name: bert-training-launcher
+          - image: amrragab8080/aws-efa-nccl-rdma:base-cudnn8-cuda11-ubuntu18.04
+            name: nccl-test-launcher
             env:
              - name: LD_LIBRARY_PATH
                value: /opt/amazon/openmpi/lib:/opt/nccl/build/lib:/opt/amazon/efa/lib:/opt/aws-ofi-nccl/install/lib:/usr/local/nvidia/lib:$LD_LIBRARY_PATH
@@ -33,7 +29,7 @@ spec:
             - --allow-run-as-root
             - --tag-output
             - -np
-            - "32"
+            - "16"
             - -bind-to
             - none
             - -map-by
@@ -58,12 +54,6 @@ spec:
             - plm_rsh_no_tree_spawn
             - "1"
             - --mca
-            - mtl 
-            - ofi
-            - --mca 
-            - mtl_ofi_provider_include 
-            - efa
-            - --mca
             - pml
             - ^cm
             - --oversubscribe
@@ -82,25 +72,28 @@ spec:
             - "1"
             - -n
             - "1000"
-            volumeMounts:
-            - name:  fsx
-              mountPath: /fsx
 
     Worker:
-      replicas: 4
+      replicas: 2
       template:
         spec:
           imagePullPolicy: Always
           volumes:
-          - name:  fsx
-            persistentVolumeClaim:
-              claimName: fsx-claim
-          - name: infiniband-efa
+          - name: efa0
             hostPath:
               path: /dev/infiniband/uverbs0
+          - name: efa1
+            hostPath:
+              path: /dev/infiniband/uverbs1
+          - name: efa2
+            hostPath:
+              path: /dev/infiniband/uverbs2
+          - name: efa3
+            hostPath:
+              path: /dev/infiniband/uverbs3
           containers:
-          - image: 231748552833.dkr.ecr.us-east-1.amazonaws.com/bert-efa-hvd-tf1-py3:latest
-            name: bert-worker
+          - image: amrragab8080/aws-efa-nccl-rdma:base-cudnn8-cuda11-ubuntu18.04
+            name: nccl-worker
             securityContext:
               privileged: true
             resources:
@@ -110,7 +103,11 @@ spec:
               requests:
                 memory: 8000Mi
             volumeMounts:
-            - name:  fsx
-              mountPath: /fsx
-            - name: infiniband-efa
+            - name: efa0
               mountPath: /dev/infiniband/uverbs0
+            - name: efa1
+              mountPath: /dev/infiniband/uverbs1
+            - name: efa2
+              mountPath: /dev/infiniband/uverbs2
+            - name: efa3
+              mountPath: /dev/infiniband/uverbs3
