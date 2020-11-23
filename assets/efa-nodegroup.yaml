@@ -87,7 +87,7 @@ Parameters:
 
   NodeInstanceType:
     Type: String
-    Default: p3dn.24xlarge
+    Default: p4d.24xlarge
     AllowedValues:
       - a1.medium
       - a1.large
