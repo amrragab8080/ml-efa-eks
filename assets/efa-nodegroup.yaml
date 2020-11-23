@@ -578,7 +578,7 @@ Resources:
               - !Ref NodeSecurityGroup
             InterfaceType: efa
             SubnetId: !Ref SubnetId
-           - Description: NetworkInterfaces Configuration For EFA and EKS
+          - Description: NetworkInterfaces Configuration For EFA and EKS
             NetworkCardIndex: 3
             DeviceIndex: 3
             Groups:
