@@ -558,7 +558,29 @@ Resources:
         KeyName: !Ref KeyName
         NetworkInterfaces:
           - Description: NetworkInterfaces Configuration For EFA and EKS
+            NetworkCardIndex: 0
             DeviceIndex: 0
+            Groups:
+              - !Ref NodeSecurityGroup
+            InterfaceType: efa
+            SubnetId: !Ref SubnetId
+          - Description: NetworkInterfaces Configuration For EFA and EKS
+            NetworkCardIndex: 1
+            DeviceIndex: 1
+            Groups:
+              - !Ref NodeSecurityGroup
+            InterfaceType: efa
+            SubnetId: !Ref SubnetId
+          - Description: NetworkInterfaces Configuration For EFA and EKS
+            NetworkCardIndex: 2
+            DeviceIndex: 2
+            Groups:
+              - !Ref NodeSecurityGroup
+            InterfaceType: efa
+            SubnetId: !Ref SubnetId
+           - Description: NetworkInterfaces Configuration For EFA and EKS
+            NetworkCardIndex: 3
+            DeviceIndex: 3
             Groups:
               - !Ref NodeSecurityGroup
             InterfaceType: efa
@@ -577,7 +599,7 @@ Resources:
 
             cloud-init-per once tar_efa tar -xf /tmp/aws-efa-installer-latest.tar.gz -C /tmp
             pushd /tmp/aws-efa-installer
-            cloud-init-per once install_efa ./efa_installer.sh -y
+            cloud-init-per once install_efa ./efa_installer.sh -y -g
             pop /tmp/aws-efa-installer
 
             cloud-init-per once efa_info /opt/amazon/efa/bin/fi_info -p efa
