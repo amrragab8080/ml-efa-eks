@@ -390,3 +390,6 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 This project is licensed under the MIT-0 License.
 
+## Original Work
+aws-samples/eks-efa-examples
+
