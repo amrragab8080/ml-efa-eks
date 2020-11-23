@@ -96,9 +96,18 @@ spec:
           - name:  fsx
             persistentVolumeClaim:
               claimName: fsx-claim
-          - name: infiniband-efa
+          - name: efa0
             hostPath:
               path: /dev/infiniband/uverbs0
+          - name: efa1
+            hostPath:
+              path: /dev/infiniband/uverbs1
+          - name: efa2
+            hostPath:
+              path: /dev/infiniband/uverbs2
+          - name: efa3
+            hostPath:
+              path: /dev/infiniband/uverbs3
           containers:
           - image: 231748552833.dkr.ecr.us-east-1.amazonaws.com/bert-efa-hvd-tf1-py3:latest
             name: bert-worker
@@ -113,5 +122,11 @@ spec:
             volumeMounts:
             - name:  fsx
               mountPath: /fsx
-            - name: infiniband-efa
+            - name: efa0
               mountPath: /dev/infiniband/uverbs0
+            - name: efa1
+              mountPath: /dev/infiniband/uverbs1
+            - name: efa2
+              mountPath: /dev/infiniband/uverbs2
+            - name: efa3
+              mountPath: /dev/infiniband/uverbs3
