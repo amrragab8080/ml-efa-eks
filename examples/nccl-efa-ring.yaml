@@ -39,8 +39,6 @@ spec:
             - -x
             - NCCL_ALGO=RING
             - -x
-            - FI_EFA_USE_DEVICE_RDMA=1
-            - -x
             - RDMAV_FORK_SAFE=1
             - --mca
             - pml
@@ -49,7 +47,7 @@ spec:
             - /opt/aws-ofi-nccl/install/bin/ring
 
     Worker:
-      replicas: 2
+      replicas: 1
       template:
         spec:
           imagePullPolicy: Always

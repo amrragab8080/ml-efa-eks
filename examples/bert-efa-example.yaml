@@ -1,7 +1,7 @@
 apiVersion: kubeflow.org/v1alpha2
 kind: MPIJob
 metadata:
-  name: bert-training-efa
+  name: bert-large-training-efa
 spec:
   slotsPerWorker: 8
   cleanPodPolicy: Running
@@ -33,7 +33,7 @@ spec:
             - --allow-run-as-root
             - --tag-output
             - -np
-            - "96"
+            - "256"
             - -bind-to
             - none
             - -map-by
@@ -88,7 +88,7 @@ spec:
               mountPath: /fsx
 
     Worker:
-      replicas: 12
+      replicas: 32
       template:
         spec:
           imagePullPolicy: Always

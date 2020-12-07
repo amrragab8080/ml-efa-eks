@@ -76,6 +76,9 @@ spec:
         spec:
           imagePullPolicy: Always
           volumes:
+          - name: rdmacm
+            hostPath:
+              path: /dev/infiniband/rdma_cm
           - name: efa0
             hostPath:
               path: /dev/infiniband/uverbs0
@@ -88,11 +91,29 @@ spec:
           - name: efa3
             hostPath:
               path: /dev/infiniband/uverbs3
+          - name: efad0
+            hostPath:
+              path: /sys/class/infiniband/efa_0
+          - name: efad1
+            hostPath:
+              path: /sys/class/infiniband/efa_1
+          - name: efad2
+            hostPath:
+              path: /sys/class/infiniband/efa_2
+          - name: efad3
+            hostPath:
+              path: /sys/class/infiniband/efa_3
+          - name: alld
+            hostPath:
+              path: /sys/devices
+          - name: alls
+            hostPath:
+              path: /sys/bus
           containers:
           - image: amrragab8080/aws-efa-nccl-rdma:base-cudnn8-cuda11-ubuntu18.04
             name: nccl-worker
             securityContext:
-              privileged: true
+               add: ["IPC_LOCK","SYS_ADMIN","NET_ADMIN"]
             resources:
               limits:
                 nvidia.com/gpu: 8
@@ -100,6 +121,8 @@ spec:
               requests:
                 memory: 8000Mi
             volumeMounts:
+            - name: rdmacm
+              mountPath: /dev/infiniband/rdma_cm
             - name: efa0
               mountPath: /dev/infiniband/uverbs0
             - name: efa1
@@ -108,3 +131,15 @@ spec:
               mountPath: /dev/infiniband/uverbs2
             - name: efa3
               mountPath: /dev/infiniband/uverbs3
+            - name: efad0
+              mountPath: /sys/class/infiniband/efa_0
+            - name: efad1
+              mountPath: /sys/class/infiniband/efa_1
+            - name: efad2
+              mountPath: /sys/class/infiniband/efa_2
+            - name: efad3
+              mountPath: /sys/class/infiniband/efa_3
+            - name: alld
+              mountPath: /sys/devices
+            - name: alls
+              mountPath: /sys/bus
