@@ -3,7 +3,7 @@
 FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
 ARG EFA_INSTALLER_VERSION=latest
-ARG NCCL_VERSION=v2.6.4-1
+ARG NCCL_VERSION=master
 ARG AWS_OFI_NCCL_VERSION=aws
 ARG NCCL_TESTS_VERSION=v2.0.0
 
@@ -52,7 +52,7 @@ RUN /opt/amazon/efa/bin/fi_info --version
 RUN git clone https://github.com/NVIDIA/nccl.git $HOME/nccl \
     && cd $HOME/nccl \
     && make -j src.build CUDA_HOME=/usr/local/cuda \
-    NVCC_GENCODE="-gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_60,code=sm_60"
+    NVCC_GENCODE="-gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_60,code=sm_60"
 
 ###################################################
 ## Install AWS-OFI-NCCL plugin
@@ -75,6 +75,7 @@ RUN git clone https://github.com/NVIDIA/nccl-tests.git $HOME/nccl-tests \
     && make MPI=1 \
        MPI_HOME=/opt/amazon/openmpi/ \
        CUDA_HOME=/usr/local/cuda \
-       NCCL_HOME=$HOME/nccl/build
+       NCCL_HOME=$HOME/nccl/build \
+       NVCC_GENCODE="-gencode=arch=compute_80,code=sm_80 -gencode=arch=compute_70,code=sm_70 -gencode=arch=compute_60,code=sm_60"
 
 CMD echo "EFA Setup Complete! "
