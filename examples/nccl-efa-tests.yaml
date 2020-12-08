@@ -113,7 +113,7 @@ spec:
           - image: amrragab8080/aws-efa-nccl-rdma:base-cudnn8-cuda11-ubuntu18.04
             name: nccl-worker
             securityContext:
-               add: ["IPC_LOCK","SYS_ADMIN","NET_ADMIN"]
+               privileged: true
             resources:
               limits:
                 nvidia.com/gpu: 8
