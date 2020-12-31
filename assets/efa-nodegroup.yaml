@@ -587,6 +587,14 @@ Resources:
 
             #!/bin/bash
             set -o xtrace
+            echo -e "MIG_PARTITION=7" >> /etc/default/mig
+            systemctl start aws-gpu-mig.service
+
+            --==BOUNDARY==
+            Content-Type: text/x-shellscript; charset="us-ascii"
+
+            #!/bin/bash
+            set -o xtrace
             /etc/eks/bootstrap.sh ${ClusterName} ${BootstrapArguments}
             /opt/aws/bin/cfn-signal --exit-code $? \
                      --stack  ${AWS::StackName} \
