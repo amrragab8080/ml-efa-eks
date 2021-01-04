@@ -603,6 +603,14 @@ Resources:
             pop /tmp/aws-efa-installer
 
             cloud-init-per once efa_info /opt/amazon/efa/bin/fi_info -p efa
+            
+            --==BOUNDARY==
+            Content-Type: text/x-shellscript; charset="us-ascii"
+
+            #!/bin/bash
+            set -o xtrace
+            echo -e "MIG_PARTITION=7" >> /etc/default/mig
+            systemctl start aws-gpu-mig.service
 
             --==BOUNDARY==
             Content-Type: text/x-shellscript; charset="us-ascii"
