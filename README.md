@@ -1,3 +1,6 @@
+# THIS REPO HAS BEEN DEPRECATED FOR:
+https://github.com/aws-samples/aws-efa-eks
+
 # Getting started with EFA on EKS using FSx
 
 
